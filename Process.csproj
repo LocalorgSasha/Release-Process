@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+        <LangVersion>11</LangVersion>
+        <ApplicationIcon>Img\suta-shin_logo.ico</ApplicationIcon>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+      <PackageReference Include="Ressy" Version="1.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Img\61225.png" />
+      <Resource Include="Img\61225.png" />
+      <None Remove="Img\suta-shin_logo.ico" />
+      <None Remove="Img\suta-shin_logo.png" />
+      <Resource Include="Img\suta-shin_logo.png" />
+      <None Remove="Img\suta-shin_background.png" />
+      <None Remove="Img\fon.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Img\suta-shin_logo.ico" />
+    </ItemGroup>
+
+</Project>
