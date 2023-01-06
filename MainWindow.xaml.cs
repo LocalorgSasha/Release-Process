@@ -30,7 +30,7 @@ namespace Process
         {
             InitializeComponent();
            
-            
+
         }
         
 
@@ -64,6 +64,7 @@ namespace Process
             ProcessCombobox.Items.Clear();
             StackProcess stackProcess = new StackProcess();
             stackProcess.Update();
+           
             Viewm = stackProcess.OpenLoad();
             foreach (var item in Viewm)
             {
@@ -85,6 +86,7 @@ namespace Process
             {
                 StackProcess stackProcess = new StackProcess();
                 stackProcess.Update();
+                
                 Viewm = stackProcess.OpenLoad();
                 foreach (var item in Viewm)
                 {
@@ -92,7 +94,7 @@ namespace Process
                     {
                         if ((int)item.Value/60>=1)
                         {
-                            TotalTime.Text =$"  {(int)item.Value/60} hour ";
+                            TotalTime.Text =$"  {(int)item.Value/60} hour  {(int)item.Value} minute";
                         }
                         else
                         {

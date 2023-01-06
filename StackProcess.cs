@@ -8,11 +8,17 @@ using Newtonsoft.Json;
 
 namespace Serilization;
 
+public static class NewStart
+{
+   static public bool _ISCount { get; set; } = false;
+   static public double _Buffer { get; set; }
+}
 public class StackProcess
 { 
     private const string PATH = "SaveProcess.JSON";
     public string Name { get; set; }
     private bool _isUpdate = false;
+    
     Dictionary<string, double> _procesAdd = new Dictionary<string, double>();
 
         //Сохраняем Данные
@@ -114,6 +120,8 @@ public class StackProcess
         double minute=0;
         double buffer=0;
         bool IsActiv = false;
+       
+        int count = 0;
        Dictionary<string,double> procupdate = LoadProcess();
 
         for (int i = 0; i < LoadProcess().Count; i++)
@@ -136,15 +144,24 @@ public class StackProcess
                    
                     minute = (DateTime.Now - thread.StartTime).TotalMinutes;
                     buffer =  minute ;
+                   
                     break;
                 }
-
+                
                 if (Convert.ToInt32(pair.Value) != buffer)
                 {
-                        
-                        double col = Math.Abs(Math.Round(buffer) - Convert.ToInt32(pair.Value));
-                        pair = new KeyValuePair<string, double>(pair.Key, pair.Value+col);
-                        procupdate![pair.Key] = pair.Value; 
+                    if (buffer<pair.Value)
+                    {
+                        NewStart._Buffer = pair.Value;
+                    }
+                    else
+                    {
+                        NewStart._Buffer = 0;
+                    }
+                    double col = Math.Abs( NewStart._Buffer+Math.Round(buffer) - Convert.ToInt32(pair.Value));
+                    col = Math.Abs(buffer - col);
+                    pair = new KeyValuePair<string, double>(pair.Key, pair.Value+col);
+                    procupdate![pair.Key] = pair.Value; 
                         
                 }
                 else
