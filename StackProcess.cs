@@ -158,7 +158,9 @@ public class StackProcess
                     {
                         NewStart._Buffer = 0;
                     }
-                    double col = Math.Abs( NewStart._Buffer+Math.Round(buffer) - Convert.ToInt32(pair.Value));
+
+                    double b = NewStart._Buffer + Math.Round(buffer, 2);
+                    double col = Math.Abs( Convert.ToInt32(b) - Convert.ToInt32(pair.Value));
                     col = Math.Abs(buffer - col);
                     pair = new KeyValuePair<string, double>(pair.Key, pair.Value+col);
                     procupdate![pair.Key] = pair.Value; 

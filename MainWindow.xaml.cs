@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,24 +17,45 @@ using Microsoft.Win32;
 using Ressy;
 using Serilization;
 using static System.Diagnostics.Process;
+using Timer = System.Timers.Timer;
 
 namespace Process
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    /// 
     public partial class MainWindow : Window
     {
         private string _buffer;
+        private static Timer aTimer;
         Dictionary<string,double> Viewm = new Dictionary<string, double>();
         public MainWindow()
         {
             InitializeComponent();
-           
+            aTimer = new System.Timers.Timer();
+             aTimer.Interval = 25000;
+
+            // Hook up the Elapsed event for the timer. 
+            aTimer.Elapsed += OnTimedEvent;
+
+            // Have the timer fire repeated events (true is the default)
+            aTimer.AutoReset = true;
+
+            // Start the timer
+            aTimer.Enabled = true;
+
+            Console.WriteLine("Press the Enter key to exit the program at any time... ");
+            Console.ReadLine();
 
         }
+        private static void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            Console.WriteLine("The Elapsed event was raised at {0}", e.SignalTime);
+            StackProcess stackProcess = new StackProcess();
+            stackProcess.Update();
+        }
         
-
         private void Add_OnClick(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -63,7 +85,7 @@ namespace Process
         {
             ProcessCombobox.Items.Clear();
             StackProcess stackProcess = new StackProcess();
-            stackProcess.Update();
+           // stackProcess.Update();
            
             Viewm = stackProcess.OpenLoad();
             foreach (var item in Viewm)
@@ -85,7 +107,7 @@ namespace Process
             if (selectedItem!=null)
             {
                 StackProcess stackProcess = new StackProcess();
-                stackProcess.Update();
+              //  stackProcess.Update();
                 
                 Viewm = stackProcess.OpenLoad();
                 foreach (var item in Viewm)
