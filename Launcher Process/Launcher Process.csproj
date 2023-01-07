@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <RootNamespace>Launcher_Process</RootNamespace>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+        <ApplicationIcon>Img\suta-shin_logo.ico</ApplicationIcon>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Img\suta-shin_logo.ico" />
+      <Resource Include="Img\suta-shin_logo.ico" />
+      <None Remove="Img\suta-shin_logo.png" />
+      <Resource Include="Img\suta-shin_logo.png" />
+    </ItemGroup>
+
+</Project>
