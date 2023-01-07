@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,32 +12,26 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Threading;
 using Microsoft.Win32;
 using Ressy;
 using Serilization;
 using static System.Diagnostics.Process;
-using Timer = System.Timers.Timer;
 
 namespace Process
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    /// 
     public partial class MainWindow : Window
     {
         private string _buffer;
-       
-        private string? _cuurentProcessItem;
-        private System.Diagnostics.Process _process;
-        Dictionary<string?, TimeSpan> Viewm = new ();
-
+        Dictionary<string,double> Viewm = new Dictionary<string, double>();
         public MainWindow()
         {
             InitializeComponent();
-        }
+           
 
+        }
         
 
         private void Add_OnClick(object sender, RoutedEventArgs e)
@@ -48,15 +40,15 @@ namespace Process
             openFileDialog.Filter = "EXE files (*.exe)|*.exe";
             if (openFileDialog.ShowDialog() == true)
             {
-
+             
                 string buf = openFileDialog.FileName;
                 int v = buf.LastIndexOf(@"\");
                 buf = buf.Substring(v + 1);
-
-
+               
+                
                 string flippedText = new string(buf.Reverse().ToArray());
                 v = flippedText.LastIndexOf(@".");
-                buf = flippedText.Substring(v + 1);
+                buf = flippedText.Substring(v+1);
                 _buffer = new string(buf.Reverse().ToArray());
                 StackProcess stackProcess = new StackProcess
                 {
@@ -64,15 +56,15 @@ namespace Process
                 };
                 stackProcess.CurrentProcess();
             }
-
+           
         }
 
         private void Update_OnClick(object sender, RoutedEventArgs e)
         {
             ProcessCombobox.Items.Clear();
             StackProcess stackProcess = new StackProcess();
-            // stackProcess.Update();
-
+            stackProcess.Update();
+           
             Viewm = stackProcess.OpenLoad();
             foreach (var item in Viewm)
             {
@@ -82,35 +74,60 @@ namespace Process
 
         private void ProcessCombobox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            bool IsActiv = false;
+            string buf="";
+            
             System.Diagnostics.Process[] processes = System.Diagnostics.Process.GetProcesses();
-
+            
             object selectedItem = ProcessCombobox.SelectedItem;
+            
 
-
-            if (selectedItem != null)
+            if (selectedItem!=null)
             {
-                _cuurentProcessItem = selectedItem.ToString();
-                if (processes.Length > 0)
-                {
-                    System.Diagnostics.Process myProcess = new System.Diagnostics.Process();
-                     myProcess.StartInfo.FileName = selectedItem.ToString();
-                     _process = myProcess;
-                    myProcess.EnableRaisingEvents = true;
-                    myProcess.Exited += (ProcessOnExited);
-                    myProcess.Start();
-                }
-               
-            }
-        }
-        private void ProcessOnExited(object? sender, EventArgs e)
-        {
-            if (_process != null)
-            {
-                TimeSpan elapsedTime = _process.ExitTime - _process.StartTime;
-                TotalTime.Dispatcher.BeginInvoke(() => TotalTime.Text = elapsedTime.ToString());
                 StackProcess stackProcess = new StackProcess();
-                stackProcess.Update( _cuurentProcessItem,elapsedTime);
+                stackProcess.Update();
+                
+                Viewm = stackProcess.OpenLoad();
+                foreach (var item in Viewm)
+                {
+                    if ((string) selectedItem ==item.Key )
+                    {
+                        if ((int)item.Value/60>=1)
+                        {
+                            TotalTime.Text =$"  {(int)item.Value/60} hour  {(int)item.Value} minute";
+                        }
+                        else
+                        {
+                            TotalTime.Text =$"   {(int)item.Value} minute ";
+                        }
+                   
+                    }
+                
+                }
+                foreach (var item in processes)
+                {
+                
+                    if (item.ProcessName == selectedItem.ToString())
+                    {
+                        buf = "active";
+                        IsActiv = true;
+
+                    }
+               
+                }
+                if (!IsActiv)
+                {
+                    buf = "no active";
+                }
+                Block.Text = buf;
             }
+            else
+            {
+                Block.Text = "";
+            }
+            
+            
+            
         }
     }
 }
