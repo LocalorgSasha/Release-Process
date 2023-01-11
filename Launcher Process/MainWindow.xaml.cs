@@ -112,8 +112,7 @@ namespace Launcher_Process
                 if (processes.Length > 0)
                 {
                     System.Diagnostics.Process myProcess = new System.Diagnostics.Process();
-                   
-                  // myProcess.StartInfo.FileName = "C:\\CLion 2022.3.1\\bin\\"+ selectedItem;
+                    // myProcess.StartInfo.FileName = "C:\\CLion 2022.3.1\\bin\\"+ selectedItem;
                   myProcess.StartInfo.FileName = FileOfPATH;
                   //  myProcess.StartInfo.Verb =selectedItem.ToString();
                     _process = myProcess;
@@ -122,6 +121,8 @@ namespace Launcher_Process
                    // myProcess.StartInfo.WorkingDirectory = "C:\\CLion 2022.3.1\\bin\\";
                    myProcess.Exited += (ProcessOnExited);
                     myProcess.Start();
+                    CollectionProcess.IsHitTestVisible = false;
+                    
                     CurrentTextBox.Text = "Activate";
                 }
             }
@@ -142,6 +143,8 @@ namespace Launcher_Process
                         TotalTextBox.Text += $" {GetName(item.Key)}: \n {(int)item.Value.TotalHours} hour, {Math.Round(item.Value.TotalMinutes)} minute;\n";
                     }
                     CollectionProcess.Items.Clear();
+                    CollectionProcess.IsHitTestVisible = true;
+                   
                     StackProcess process = new StackProcess();
                     foreach (var item in process.OpenLoad())
                     {
