@@ -17,9 +17,9 @@
             <TextBlock Name="AddCurrent" TextAlignment="Center" Width="135" Height="16">Select the process to run</TextBlock>
             <ComboBox Name="CollectionProcess" Width="135" Height="30" SelectionChanged="CollectionProcess_OnSelectionChanged"></ComboBox>
             <TextBlock Name="CurrentTextBlock" TextAlignment="Center" Width="120" Height="15">CurrentProcess</TextBlock>
-            <TextBox Name="CurrentTextBox" Margin="1,2,3,4" Width="135" Height="50"></TextBox>
+            <TextBox Name="CurrentTextBox" Margin="1,2,3,4" Width="135" Height="50" IsReadOnly="True"></TextBox>
             <TextBlock Name="TotalTextBlock" TextAlignment="Center" Width="135" Height="15">Total Process</TextBlock>
-            <TextBox Name="TotalTextBox" Margin="1,2,3,4" Width="135" Height="250"></TextBox>
+            <TextBox Name="TotalTextBox" Margin="1,2,3,4" Width="135" Height="250" IsReadOnly="True"></TextBox>
         </StackPanel>
     </Grid>
 </Window>

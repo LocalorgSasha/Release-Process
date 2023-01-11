@@ -30,7 +30,7 @@ namespace Launcher_Process
         private System.Diagnostics.Process _process = null!;
         private Dictionary<string, TimeSpan> _viewWindows = new ();
 
-        public string GetName(string FileOfPath)
+        private string GetName(string FileOfPath)
         {
             string NameProc = "";
             string buf = FileOfPath;
@@ -44,6 +44,8 @@ namespace Launcher_Process
             NameProc = new string(buf.Reverse().ToArray());
             return NameProc;
         }
+
+      
         public MainWindow()
         {
             InitializeComponent();
@@ -61,27 +63,6 @@ namespace Launcher_Process
         }
         private void AddProcess_OnClick(object sender, RoutedEventArgs e)
         {
-            
-            /*OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "EXE files (*.exe)|*.exe";
-            if (openFileDialog.ShowDialog() == true)
-            {
-
-                string buf = openFileDialog.FileName;
-                int v = buf.LastIndexOf(@"\");
-                buf = buf.Substring(v + 1);
-
-
-                string flippedText = new string(buf.Reverse().ToArray());
-                v = flippedText.LastIndexOf(@".");
-                buf = flippedText.Substring(v + 1);
-                _buffer = new string(buf.Reverse().ToArray());
-                StackProcess stackProcess = new StackProcess
-                {
-                    Name = _buffer
-                };
-                stackProcess.CurrentProcess();
-            }*/
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "EXE files (*.exe)|*.exe";
             if (openFileDialog.ShowDialog() == true)
@@ -89,7 +70,7 @@ namespace Launcher_Process
                 
                 StackProcess stackProcess = new StackProcess
                 {
-                    Name =    openFileDialog.FileName
+                    Name = openFileDialog.FileName
                 };
                 stackProcess.CurrentProcess();
             }
@@ -104,6 +85,7 @@ namespace Launcher_Process
 
         }
 
+        
         private void CollectionProcess_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string FileOfPATH = "";
@@ -133,15 +115,12 @@ namespace Launcher_Process
                    
                   // myProcess.StartInfo.FileName = "C:\\CLion 2022.3.1\\bin\\"+ selectedItem;
                   myProcess.StartInfo.FileName = FileOfPATH;
-                   
-                   
                   //  myProcess.StartInfo.Verb =selectedItem.ToString();
                     _process = myProcess;
                     myProcess.EnableRaisingEvents = true;
                     myProcess.StartInfo.UseShellExecute = true;
                    // myProcess.StartInfo.WorkingDirectory = "C:\\CLion 2022.3.1\\bin\\";
-                   
-                    myProcess.Exited += (ProcessOnExited);
+                   myProcess.Exited += (ProcessOnExited);
                     myProcess.Start();
                     CurrentTextBox.Text = "Activate";
                 }
@@ -161,6 +140,12 @@ namespace Launcher_Process
                     foreach (var item in stackProcess.OpenLoad())
                     {
                         TotalTextBox.Text += $" {GetName(item.Key)}: \n {(int)item.Value.TotalHours} hour, {Math.Round(item.Value.TotalMinutes)} minute;\n";
+                    }
+                    CollectionProcess.Items.Clear();
+                    StackProcess process = new StackProcess();
+                    foreach (var item in process.OpenLoad())
+                    {
+                        CollectionProcess.Items.Add(GetName(item.Key));
                     }
                     return CurrentTextBox.Text ;
                 });
